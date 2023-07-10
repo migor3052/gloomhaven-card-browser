@@ -17,6 +17,7 @@ import { Item, Option } from "../../common/types";
 import CardList from "../../components/CardList";
 import Layout from "../../components/Layout";
 import Sort from "../../components/Sort";
+import Components from "../../components/Components";
 
 const sortOrderOptions: Option[] = [
   { id: "id", name: "Item Number" },
@@ -94,14 +95,19 @@ type PageProps = {
 };
 
 const Items = ({ searchResults }: PageProps) => {
-  const [search, setSearch] = useState(null);
+  const [itemId, setItemId] = useState(null);
+  const [name, setName] = useState(null);
   const { spoilers } = useSpoilers();
 
   const router = useRouter();
   const game = verifyQueryParam(router.query.game, "gh");
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(parseInt(e.target.value, 10));
+  const handleIdSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setItemId(parseInt(e.target.value, 10));
+  };
+
+  const handleNameSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
   };
 
   useEffect(() => {
@@ -113,7 +119,8 @@ const Items = ({ searchResults }: PageProps) => {
 
   const cardList = searchResults
     ?.filter(itemSpoilerFilter(spoilers))
-    .filter((i) => !search || i.id === search);
+    .filter((i) => !itemId || i.id === itemId)
+    .filter((i) => !name || i.name.toLowerCase().includes(name.toLowerCase()));
 
   return (
     <Layout
@@ -130,14 +137,30 @@ const Items = ({ searchResults }: PageProps) => {
             {"Item ID:"}
             <input
               className="id-filter"
-              onChange={handleSearchChange}
+              onChange={handleIdSearchChange}
               type="number"
+            />
+          </div>
+          <div
+            className="flex"
+            style={{ fontWeight: 600, justifyContent: "left" }}
+          >
+            {"Name:"}
+            <input
+              className="name-filter"
+              onChange={handleNameSearchChange}
+              type="text"
             />
           </div>
           <ItemFilters />
         </div>
       </div>
-      {!spoilers.loading && <CardList cardList={cardList} showId />}
+      {!spoilers.loading && (
+        <>
+          <Components cardList={cardList} />
+          <CardList cardList={cardList} showId />
+        </>
+      )}
     </Layout>
   );
 };
