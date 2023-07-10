@@ -1,7 +1,8 @@
 import { characters } from "../data/characters";
 import { games } from "../data/games";
 import { Card, Character, CharacterAbility, Item, Spoilers } from "./types";
-
+import item_unlocks from "../data/item_unlocks.json";
+const { unlocked_items } = item_unlocks;
 export const defaultDescription =
   "Gloomhaven Card Browser is a tool for viewing Ability, Item, Monster, and Event cards from the games Gloomhaven, Frosthaven, Forgotten Circles, Jaws of the Lion, Crimson Circles, and Trail of Ashes";
 export const defaultTitle = "Gloomhaven Card Browser";
@@ -156,7 +157,7 @@ export function characterSpoilerFilter(
 
 export function itemSpoilerFilter(spoilers: Spoilers): (item: Item) => boolean {
   return (card) => {
-    switch (card.source) {
+    switch (card.game) {
       case "prosperity":
         return (
           card.prosperity <= parseInt(String(spoilers.items.prosperity), 10)
@@ -180,7 +181,9 @@ export function itemSpoilerFilter(spoilers: Spoilers): (item: Item) => boolean {
       case "cs":
       case "toa":
       case "fh":
-        return true;
+        if (!spoilers.partyItems) return true;
+        if (unlocked_items.includes(card.id)) return true;
+        return false;
       default:
         return false;
     }
