@@ -18,6 +18,7 @@ export const defaultSpoilersContextValue: Spoilers = {
   },
   level: 1,
   loading: true,
+  partyItems: false,
 };
 
 const SpoilersContext = createContext<SpoilersContextInterface>({
