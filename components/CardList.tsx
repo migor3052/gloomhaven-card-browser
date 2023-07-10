@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBan, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBan,
+  faArrowsRotate,
+  faScrewdriverWrench,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { getBaseUrl } from "../common/helpers";
-import { Card } from "../common/types";
+import { Card, Item } from "../common/types";
+import {
+  useUpdateSelectedItem,
+  useSelectedItem,
+} from "../hooks/useSelectedItem";
+import React from "react";
 
 const CARDS_PER_PAGE = 12;
 
@@ -20,13 +29,13 @@ const Empty = () => {
   );
 };
 
-type CardProps = {
-  card: Card;
-  horizontal?: boolean;
-  showId?: boolean;
-};
+const Card = ({ card, horizontal, showId }) => {
+  const { updateSelectedItem } = useUpdateSelectedItem();
 
-const Card = ({ card, horizontal, showId }: CardProps) => {
+  const handleResourcesClick = () => {
+    updateSelectedItem({ item: card });
+  };
+
   return (
     <div className={horizontal ? "card-horizontal" : "card"}>
       {showId && <div className="card-id">{card.id}</div>}
@@ -46,15 +55,28 @@ const Card = ({ card, horizontal, showId }: CardProps) => {
           />
         </div>
       </div>
+      {card?.resources?.item && (
+        <button className={`${"resources-btn"}`} onClick={handleResourcesClick}>
+          <FontAwesomeIcon
+            className={`${"card-flip-svg"}`}
+            icon={faScrewdriverWrench}
+            height="48px"
+          />
+        </button>
+      )}
     </div>
   );
 };
 
-const FlipCard = ({ card, horizontal, showId }: CardProps) => {
+const FlipCard = ({ card, horizontal, showId }) => {
   const [flipped, setFlipped] = useState(false);
+  const { updateSelectedItem } = useUpdateSelectedItem();
 
   const handleBtnClick = () => {
     setFlipped(!flipped);
+  };
+  const handleResourcesClick = () => {
+    updateSelectedItem({ item: null });
   };
 
   return (
@@ -97,7 +119,44 @@ const FlipCard = ({ card, horizontal, showId }: CardProps) => {
           height="48px"
         />
       </button>
+      {card?.resources?.item && (
+        <button className={`${"resources-btn"}`} onClick={handleResourcesClick}>
+          <FontAwesomeIcon
+            className={`${"card-flip-svg"}`}
+            icon={faScrewdriverWrench}
+            height="48px"
+          />
+        </button>
+      )}
     </div>
+  );
+};
+
+type SubCardListProps = {
+  cardList: Item[];
+  horizontal?: boolean;
+  showId?: boolean;
+};
+
+export const SubCardList = ({
+  cardList,
+  horizontal,
+  showId,
+}: SubCardListProps) => {
+  const { selectedItem } = useSelectedItem();
+
+  if (!selectedItem?.item) {
+    return null;
+  }
+  return (
+    <CardList
+      cardList={cardList.filter((card) =>
+        selectedItem?.item?.resources?.item.includes(card.id)
+      )}
+      horizontal={horizontal}
+      showId={showId}
+      flex={false}
+    />
   );
 };
 
@@ -105,11 +164,18 @@ type CardListProps = {
   cardList: Card[];
   horizontal?: boolean;
   showId?: boolean;
+  flex?: boolean;
 };
 
-const CardList = ({ cardList, horizontal, showId }: CardListProps) => {
+const FlipCardMemo = React.memo(FlipCard);
+const CardMemo = React.memo(Card);
+const CardList = ({
+  cardList,
+  horizontal,
+  showId,
+  flex = true,
+}: CardListProps) => {
   const [data, setData] = useState(cardList.slice(0, CARDS_PER_PAGE));
-
   const loadMore = (page: number) => {
     setData(cardList?.slice(0, (page + 1) * CARDS_PER_PAGE));
   };
@@ -122,7 +188,7 @@ const CardList = ({ cardList, horizontal, showId }: CardListProps) => {
 
   return (
     <InfiniteScroll
-      className="card-list"
+      className={flex ? "card-list" : "side-card-list"}
       hasMore={data?.length < cardList.length}
       loader={<h4 key={0}>Loading...</h4>}
       loadMore={loadMore}
@@ -130,14 +196,19 @@ const CardList = ({ cardList, horizontal, showId }: CardListProps) => {
     >
       {data?.map((card, idx) =>
         card.imageBack ? (
-          <FlipCard
+          <FlipCardMemo
             key={idx}
             card={card}
             horizontal={horizontal}
             showId={showId}
           />
         ) : (
-          <Card key={idx} card={card} horizontal={horizontal} showId={showId} />
+          <CardMemo
+            key={idx}
+            card={card}
+            horizontal={horizontal}
+            showId={showId}
+          />
         )
       )}
       {[...Array(4)].map((_, idx) => (
