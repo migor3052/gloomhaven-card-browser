@@ -184,6 +184,25 @@ type CharacterSpoilersProps = {
   classes: Character[];
 };
 
+const PartySpoilers = () => {
+  const { spoilers, updateSpoilers } = useSpoilers();
+  const handleCharacterSpoilerToggleAll = () => {
+    updateSpoilers({ ...spoilers, partyItems: !spoilers.partyItems });
+  };
+
+  return (
+    <div className="spoiler-section">
+      <div
+        className="spoiler-check-option spoiler-header"
+        onClick={handleCharacterSpoilerToggleAll}
+      >
+        <input checked={spoilers.partyItems} readOnly type="checkbox" />
+        <h4>Show only Party Items</h4>
+      </div>
+    </div>
+  );
+};
+
 const CharacterSpoilers = ({ classes }: CharacterSpoilersProps) => {
   const { spoilers, updateSpoilers } = useSpoilers();
   const router = useRouter();
@@ -293,6 +312,7 @@ const Settings = ({ open, onClose }: SettingsProps) => {
               <CharacterSpoilers classes={unlockabelClasses} />
             )}
             {itemSpoilers && <ItemSpoilers itemSpoilers={itemSpoilers} />}
+            <PartySpoilers />
           </div>
           {(unlockabelClasses.length > 0 || itemSpoilers) && (
             <div className="spoilers-warning">
