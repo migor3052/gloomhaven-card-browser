@@ -35,6 +35,19 @@ export type CharacterAbility = {
   imageBack?: string;
   milestone?: boolean;
 };
+export type Resources = {
+  lumber?: number;
+  metal?: number;
+  hide?: number;
+  flamefruit?: number;
+  rockroot?: number;
+  snowthistle?: number;
+  corpsecap?: number;
+  axenut?: number;
+  arrowvine?: number;
+  item?: number[];
+  anyHerb?: number[];
+};
 
 export type Item = {
   id: number;
@@ -48,6 +61,11 @@ export type Item = {
   consumed?: boolean;
   spent?: boolean;
   prosperity?: number;
+  resources?: Resources;
+  count?: number;
+  unlockCrafstmanLevel?: number;
+  desc?: string;
+  folder?: string;
 };
 
 export type Event = {
@@ -79,4 +97,9 @@ export interface Spoilers {
   items: Record<string, string | boolean>;
   level: number;
   loading: boolean;
+  partyItems: boolean;
+}
+
+export interface SelectedItem {
+  item?: Item;
 }
