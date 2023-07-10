@@ -194,7 +194,7 @@ const Items = ({ searchResults }: PageProps) => {
       </div>
       {!spoilers.loading && (
         <>
-          <Components cardList={searchResults} />
+          <Components />
           <CardList cardList={cardList} showId />
         </>
       )}

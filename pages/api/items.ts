@@ -3,6 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { itemCards } from "../../data/item-cards";
 import { customSort, verifyQueryParam } from "../../common/helpers";
 
+export const allItems = async () => {
+  return itemCards["fh"] || [];
+};
+
 export const itemSearchResults = async (query: {
   [key: string]: string | string[];
 }) => {

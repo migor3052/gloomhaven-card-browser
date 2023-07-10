@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { SubCardList } from "./CardList";
@@ -6,13 +7,18 @@ import {
   useSelectedItem,
   useUpdateSelectedItem,
 } from "../hooks/useSelectedItem";
+import { allItems } from "../pages/api/items";
 
-type SettingsProps = {
-  cardList: Item[];
-};
-
-const Components = ({ cardList }: SettingsProps) => {
+const Components = () => {
   const { selectedItem } = useSelectedItem();
+  const [cardList, setCardList] = useState<Item[]>([]);
+
+  useEffect(() => {
+    allItems().then((items) => {
+      setCardList(items);
+    });
+  }, [allItems]);
+
   const { updateSelectedItem } = useUpdateSelectedItem();
 
   return (
