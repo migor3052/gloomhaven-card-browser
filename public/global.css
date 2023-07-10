@@ -134,7 +134,16 @@ input[type="radio"] {
   padding: 0 12px;
   width: 100%;
 }
-
+.side-card-list {
+  align-items: stretch;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16px;
+  max-width: 1100px;
+  padding: 0 12px;
+  width: 100%;
+}
 .card {
   border-radius: 12px;
   box-sizing: border-box;
@@ -216,7 +225,9 @@ input[type="radio"] {
 }
 
 .card-flip-btn,
-.card-flip-btn-back {
+.card-flip-btn-back,
+.resources-btn,
+.resources-btn-back {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -225,17 +236,28 @@ input[type="radio"] {
   height: 40px;
   width: 40px;
   position: absolute;
+}
+.resources-btn,
+.resources-btn-back {
+  bottom: 10px;
+  left: 10px;
+}
+.card-flip-btn,
+.card-flip-btn-back {
   top: 10px;
   right: 10px;
 }
 
 .card-flip-btn-back,
-.card-flip-btn-back:hover {
+.card-flip-btn-back:hover,
+.resources-btn-back,
+.resources-btn-back:hover {
   background-color: black;
 }
 
 .card-flip-btn:hover,
-.card-flip-btn-back:hover {
+.card-flip-btn-back:hover .resources-btn:hover,
+.resources-btn-back:hover {
   opacity: 0.9;
 }
 
@@ -276,7 +298,7 @@ input[type="radio"] {
   left: 0;
   height: 100%;
   width: 100%;
-  position:absolute;
+  position: absolute;
   display: none;
   transition: transform 500ms, -webkit-transform 500ms;
 }
@@ -393,6 +415,18 @@ input[type="radio"] {
   text-align: right;
   width: 44px;
 }
+.name-filter {
+  background-color: var(--grey-light);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 24px;
+  margin: 0 8px;
+  padding: 2px 8px;
+  text-align: right;
+  width: 100px;
+}
 
 .filters {
   align-items: center;
@@ -483,6 +517,21 @@ input[type="radio"] {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 15;
+}
+
+.sub-items {
+  background-image: url("/background.jpeg");
+  background-repeat: repeat;
+  height: 100%;
+  opacity: 1;
+  overflow-x: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: 0.5s;
+  width: 360px;
+  white-space: nowrap;
   z-index: 15;
 }
 
@@ -693,10 +742,6 @@ input[type="radio"] {
   margin: auto;
   padding: 8px 12px;
   width: 100%;
-}
-
-.toolbar-inner > div {
-  flex: 1;
 }
 
 .toolbar .sort {
