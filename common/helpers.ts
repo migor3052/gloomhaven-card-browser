@@ -8,7 +8,7 @@ export const defaultDescription =
 export const defaultTitle = "Gloomhaven Card Browser";
 
 export function getBaseUrl(): string {
-  return "https://raw.githubusercontent.com/cmlenius/gloomhaven-card-browser/images/images/";
+  return "https://raw.githubusercontent.com/migor3052/gloomhaven-card-browser/images/images/";
 }
 
 const nameToClassKeyMapping = characters.reduce((map, character) => {
