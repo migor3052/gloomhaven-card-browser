@@ -11,10 +11,13 @@ export const itemSearchResults = async (query: {
   const direction = verifyQueryParam(query.dir, "asc");
   const activations = verifyQueryParam(query.activations);
   const slot = verifyQueryParam(query.slot);
+  const resource = verifyQueryParam(query.resources);
 
   return (
     itemCards[game]
       ?.filter((item) => {
+        if (resource && item?.resources && !(resource in item?.resources))
+          return false;
         if (slot && item.slot !== slot) return false;
         if (activations === "consumed" && !item.consumed) return false;
         if (activations === "spent" && !item.spent) return false;

@@ -34,6 +34,18 @@ const slotFilters: Option[] = [
   { id: "small", name: "Small Item" },
 ];
 
+const resourceFilters: Option[] = [
+  { id: "lumber", name: "Lumber" },
+  { id: "metal", name: "Metal" },
+  { id: "hide", name: "Hide" },
+  { id: "axenut", name: "Axe Nut" },
+  { id: "arrowvine", name: "Arrow Vine" },
+  { id: "corpsecap", name: "Corpse Cap" },
+  { id: "flamefruit", name: "Flame Fruit" },
+  { id: "rockroot", name: "Rock Root" },
+  { id: "snowthistle", name: "Snow Thistle" },
+];
+
 const activationsFilters: Option[] = [
   { id: "consumed", name: "Consumed" },
   { id: "spent", name: "Spent" },
@@ -45,6 +57,16 @@ const ItemFilters = () => {
 
   const handleSlotChange = (newSlot: string | null) => {
     query.slot === newSlot ? delete query.slot : (query.slot = newSlot);
+    router.push({
+      pathname: "items",
+      query: query,
+    });
+  };
+
+  const handleResourcesChange = (newResources: string | null) => {
+    query.resources === newResources
+      ? delete query.resources
+      : (query.resources = newResources);
     router.push({
       pathname: "items",
       query: query,
@@ -74,7 +96,22 @@ const ItemFilters = () => {
           <img alt="" src={getBaseUrl() + `icons/items/${slot.id}.png`} />
         </div>
       ))}
-      <span style={{ marginLeft: "16px" }} />
+      <span style={{ marginLeft: "30px" }} />
+
+      <div className="button-group">
+        {resourceFilters.map((resource, idx) => (
+          <div
+            key={idx}
+            className={`filter-icon ${
+              query.resources === resource.id ? "filter-icon-selected" : ""
+            }`}
+            onClick={() => handleResourcesChange(resource.id)}
+          >
+            <img alt="" src={getBaseUrl() + `icons/items/${resource.id}.png`} />
+          </div>
+        ))}
+      </div>
+      <span style={{ marginLeft: "30px" }} />
       {activationsFilters.map((activation, idx) => (
         <div
           key={idx}
