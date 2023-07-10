@@ -157,7 +157,7 @@ const Items = ({ searchResults }: PageProps) => {
       </div>
       {!spoilers.loading && (
         <>
-          <Components cardList={cardList} />
+          <Components cardList={searchResults} />
           <CardList cardList={cardList} showId />
         </>
       )}
