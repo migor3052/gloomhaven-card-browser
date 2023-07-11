@@ -37,12 +37,12 @@ const Components = () => {
         <div className="settings-inner">
           <div className="settings-header">
             <div style={{ width: "24px" }} />
+            <SubCardList cardList={cardList} showId />
             <FontAwesomeIcon
               className="spoilers-close-icon"
               icon={faClose}
               onClick={() => updateSelectedItem({ item: null })}
             />
-            <SubCardList cardList={cardList} showId />
           </div>
         </div>
       </div>
