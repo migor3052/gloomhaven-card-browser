@@ -76,7 +76,7 @@ const FlipCard = ({ card, horizontal, showId }) => {
     setFlipped(!flipped);
   };
   const handleResourcesClick = () => {
-    updateSelectedItem({ item: null });
+    updateSelectedItem({ item: card });
   };
 
   return (
