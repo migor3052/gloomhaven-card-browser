@@ -63,10 +63,30 @@ const ItemFilters = () => {
     });
   };
 
+  /**
+   * Build the query string for the resources filter. Multiple resources can be
+   * selected at once, so we need to keep track of the current state of the
+   * query string and add or remove the resource from the query string.
+   * @param newResources the resource to add or remove from the query
+   */
   const handleResourcesChange = (newResources: string | null) => {
-    query.resources === newResources
-      ? delete query.resources
-      : (query.resources = newResources);
+    //If query is undefined, set it to newResources
+    if (!query.resources) {
+      query.resources = newResources;
+    } else {
+      // If the resource is already in the query string, remove it
+      if (query.resources.includes(newResources)) {
+        query.resources = query.resources
+          .split("&")
+          .filter((r) => r !== newResources)
+          .join("&");
+      } else {
+        // Otherwise, add it
+        query.resources = query.resources + "&" + newResources;
+      }
+    }
+    if (query.resources === "") delete query.resources;
+
     router.push({
       pathname: "items",
       query: query,
@@ -103,7 +123,9 @@ const ItemFilters = () => {
           <div
             key={idx}
             className={`filter-icon ${
-              query.resources === resource.id ? "filter-icon-selected" : ""
+              query.resources && query.resources.includes(resource.id)
+                ? "filter-icon-selected"
+                : ""
             }`}
             onClick={() => handleResourcesChange(resource.id)}
           >
