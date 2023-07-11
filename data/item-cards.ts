@@ -4003,7 +4003,7 @@ export const itemCards: Record<string, Item[]> = {
       consumed: null,
       imageBack: "items/frosthaven/fh-033-volatile-boots-back.jpeg",
       count: 2,
-      resources: { item: [96], metal: 1 },
+      resources: { item: [18, 96], metal: 1 },
       unlockCrafstmanLevel: 6.0,
       desc: "Up to once each turn during your move ability, add +1 ^fh-move^, then flip this card over at the end of your turn.",
       folder: "031-035",
