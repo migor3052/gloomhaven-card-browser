@@ -76,10 +76,12 @@ const ItemFilters = () => {
     } else {
       // If the resource is already in the query string, remove it
       if (query.resources.includes(newResources)) {
-        query.resources = query.resources
-          .split("&")
-          .filter((r) => r !== newResources)
-          .join("&");
+        if (typeof query.resources === "string") {
+          query.resources = query.resources
+            .split("&")
+            .filter((r) => r !== newResources)
+            .join("&");
+        }
       } else {
         // Otherwise, add it
         query.resources = query.resources + "&" + newResources;
